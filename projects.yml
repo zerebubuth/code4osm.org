@@ -1,19 +1,35 @@
 ---
 - name: essentials
   title: OSM Essentials
+  summary_html: >-
+    Learn about the essentials of how geographic data are structured in OSM,
+    how to interact with the OSM APIs, how data flow through the OSM
+    infrastructure and ecosystem. If you want to get an idea of how OSM is
+    structured at a very large scale, then this is a great place to start.
   scm: none
   url: essentials
   files:
     - '**/*.md'
-- name: planet-dump-ng
-  title: Planet Dump
-  scm: git
-  url: https://github.com/zerebubuth/planet-dump-ng.git
-  rename:
-    README: index
 - name: openstreetmap-cgimap
   title: CGIMap
+  summary_html: >-
+    Although the OSM website and API are written in Ruby on Rails, it can
+    be inefficient to run all API calls through it. This software could
+    be looked at as an &quot;accelerator&quot; for the Rails code, giving
+    lower memory usage, more control over database queries and sometimes
+    a faster response.
   scm: git
   url: https://github.com/zerebubuth/openstreetmap-cgimap.git
+  rename:
+    README: index
+- name: planet-dump-ng
+  title: Planet Dump
+  summary_html: >-
+    OSM data is dumped on a regular basis to provide input for many bits
+    of software and services which process, analyse and present geographic
+    data or information derived from OSM. This all starts with a huge file
+    which is produced by this bit of software.
+  scm: git
+  url: https://github.com/zerebubuth/planet-dump-ng.git
   rename:
     README: index

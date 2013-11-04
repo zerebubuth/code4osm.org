@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Code4OSM</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8"/>
@@ -33,7 +32,7 @@
 	<nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
 	  <ul class="nav navbar-nav">
 	    <% projects.each do |project| %>
-            <li<%= project['name'] == this_project ? " class=\"active\"" : "" %>>
+            <li>
               <a href="<%= topdir %>/<%= project['name'] %>/"><%= project['title'] %></a>
             </li>
 	    <% end %>
@@ -42,16 +41,27 @@
       </div>
     </header>
 
-    <div class="container bs-docs-container">
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Witty title here</h1>
+        <p>OSM, the <a href="http://osm.org/">OpenStreetMap</a> project, is the world's best free 
+	  and open source of geographic data, maintained and improved by thousands of contributors
+	  worldwide. This site brings together resources to help you develop applications using
+	  this great data, tools for contributing to the project and infrastrucure components
+	  which keep it running.</p>
+        <p><a class="btn btn-primary btn-lg" role="button" href="#essentials">Get Started &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
       <div class="row">
-	<div class="col-md-3">
-	  <div class="bs-sidebar hidden-print affix" role="complimentary">
-	    <%= toc %>
-	  </div>
-	</div>
-	<div class="col-md-9" role="main">
-	  <%= content %>
-	</div>
+	<% projects.each do |project| %>
+        <div class="col-md-4">
+          <h2 id="<%= project['name'] %>"><%= project['title'] %></h2>
+          <%= project['summary_html'] %>
+          <p><a class="btn btn-default" href="<%= project['name'] %>/" role="button">Learn more &raquo;</a></p>
+        </div>
+	<% end %>
       </div>
     </div>
 

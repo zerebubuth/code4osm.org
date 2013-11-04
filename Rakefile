@@ -109,11 +109,18 @@ namespace :code4osm do
     end
   end
 
+  task :index do
+    target_file = File.join(targetdir, 'index.html')
+    File.open(target_file, "w") do |fh|
+      fh.puts run_template("", "", "", '_templates/index.erb', ".", projects, "")
+    end
+  end
+
   task :static do
     FileUtils.cp_r('_static/.', "#{targetdir}/static")
   end
 
-  task :website => [:static, *tasks] do
+  task :website => [:index, :static, *tasks] do
     puts "Doing website"
     FileUtils.cp_r(targetdir + "/.", publishdir + "/.")
   end
