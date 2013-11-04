@@ -1,0 +1,133 @@
+# -*- mode: ruby -*-
+
+require 'yaml'
+require 'git'
+require 'logger'
+require 'redcarpet'
+require 'coderay'
+require 'pathname'
+require 'erb'
+
+class MarkdownRenderer < Redcarpet::Render::HTML
+  def block_code(code, language)
+    language = :plain if language.nil?
+    CodeRay.highlight(code, language)
+  end
+end
+
+def markdown(text)
+  rndr = MarkdownRenderer.new(:filter_html => true, :with_toc_data => true)
+  options = {
+    :fenced_code_blocks => true,
+    :no_intra_emphasis => true,
+    :autolink => true,
+    :strikethrough => true,
+    :lax_html_blocks => true,
+    :superscript => true
+  }
+  markdown_to_html = Redcarpet::Markdown.new(rndr, options)
+
+  toc_rndr = Redcarpet::Render::HTML_TOC.new
+  markdown_to_toc = Redcarpet::Markdown.new(toc_rndr, options)
+
+  {:toc => markdown_to_toc.render(text), :content => markdown_to_html.render(text)}
+end
+
+def run_template(title, toc, content, template, topdir, projects, this_project)
+  b = binding
+  ERB.new(File.read(template)).result(b)
+end
+
+namespace :code4osm do
+  tasks = Array.new
+  config = YAML.load(File.read('config.yml'))
+  projects = YAML.load(File.read('projects.yml'))
+  tmpdir = config['tmpdir'] || '/tmp/code4osm'
+  raise Exception.new("Must specify target directory.") unless config.has_key?('targetdir')
+  targetdir = config['targetdir']
+  raise Exception.new("Must specify publish directory.") unless config.has_key?('publishdir')
+  targetdir = config['publishdir']
+  
+  task :tmpdir do
+    Dir.mkdir(tmpdir) unless Dir.exist?(tmpdir)
+  end
+  
+  projects.each do |project|
+    name = project['name']
+    workdir = "#{tmpdir}/#{name}"
+    template = project['template'] || '_templates/default.erb'
+    
+    namespace name.to_sym do
+      task :update => [:tmpdir] do
+        case project['scm']
+        when 'git'
+          if Dir.exist?(workdir)
+            g = Git.open(workdir, :log => Logger.new(STDOUT))
+            g.pull
+          else
+            Git.clone(project['url'], name, :path => tmpdir)
+          end
+          
+        when 'none'
+          # nothing to do, work dir is already in place
+          
+        else
+          raise Exception.new("Unknown or unimplemented SCM #{project['scm'].inspect}.")
+        end
+      end
+      
+      task :build => [:update] do
+        FileUtils.rm_rf(targetdir)
+        FileUtils.mkdir_p(targetdir)
+
+        globs = project['files'] || ['**/*.md']
+        workdir = project['url'] if project['scm'] == 'none'
+        globs.each do |glob|
+          Dir.glob("#{workdir}/#{glob}") do |file|
+            reldir = Pathname.new(File.dirname(file)).relative_path_from(Pathname.new(workdir)).to_s
+            topdir = Pathname.new(File.join(workdir, "..")).relative_path_from(Pathname.new(File.dirname(file))).to_s
+            ext = File.extname(file)
+            base = File.basename(file, ext)
+
+            # so we can move some stuff around to make the layout
+            # better for web.
+            if project.has_key?('rename') and project['rename'].has_key?(base)
+              base = project['rename'][base]
+            end
+
+            target_file = File.join(targetdir, name, reldir, base + '.html')
+            title = base.gsub(/[ _-]/, " ").capitalize
+
+            FileUtils.mkdir_p(File.dirname(target_file))
+            File.open(target_file, "w") do |fh|
+              md = markdown(File.read(file))
+              fh.puts run_template(title, md[:toc], md[:content], template, topdir, projects, name)
+            end
+            puts "Built: #{target_file}"
+          end
+        end
+      end
+
+      tasks << "code4osm:#{name}:build"
+    end
+  end
+
+  task :static do
+    FileUtils.rm_rf("#{targetdir}/static")
+    FileUtils.cp_r('_static', "#{targetdir}/static")
+  end
+
+  task :website => [:static, *tasks] do
+    puts "Doing website"
+    if Dir.exist?(publishdir)
+      FileUtils.move(publishdir, publishdir + ".old")
+    end
+    FileUtils.move(targetdir, publishdir)
+    if Dir.exist?(publishdir + ".old")
+      FileUtils.rm_rf(publishdir + ".old")
+    end
+  end
+end
+
+task :default => 'code4osm:website'
+

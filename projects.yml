@@ -1,0 +1,19 @@
+---
+- name: essentials
+  title: OSM Essentials
+  scm: none
+  url: essentials
+  files:
+    - '**/*.md'
+- name: planet-dump-ng
+  title: Planet Dump
+  scm: git
+  url: https://github.com/zerebubuth/planet-dump-ng.git
+  rename:
+    README: index
+- name: openstreetmap-cgimap
+  title: CGIMap
+  scm: git
+  url: https://github.com/zerebubuth/openstreetmap-cgimap.gi
+  rename:
+    README: index
