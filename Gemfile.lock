@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    coderay (1.1.0)
+    git (1.2.6)
+    rake (10.1.0)
+    redcarpet (3.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  coderay
+  git
+  rake
+  redcarpet
