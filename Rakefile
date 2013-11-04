@@ -46,7 +46,7 @@ namespace :code4osm do
   raise Exception.new("Must specify target directory.") unless config.has_key?('targetdir')
   targetdir = config['targetdir']
   raise Exception.new("Must specify publish directory.") unless config.has_key?('publishdir')
-  targetdir = config['publishdir']
+  publishdir = config['publishdir']
   
   task :tmpdir do
     Dir.mkdir(tmpdir) unless Dir.exist?(tmpdir)
@@ -77,9 +77,6 @@ namespace :code4osm do
       end
       
       task :build => [:update] do
-        FileUtils.rm_rf(targetdir)
-        FileUtils.mkdir_p(targetdir)
-
         globs = project['files'] || ['**/*.md']
         workdir = project['url'] if project['scm'] == 'none'
         globs.each do |glob|
@@ -113,19 +110,12 @@ namespace :code4osm do
   end
 
   task :static do
-    FileUtils.rm_rf("#{targetdir}/static")
-    FileUtils.cp_r('_static', "#{targetdir}/static")
+    FileUtils.cp_r('_static/.', "#{targetdir}/static")
   end
 
   task :website => [:static, *tasks] do
     puts "Doing website"
-    if Dir.exist?(publishdir)
-      FileUtils.move(publishdir, publishdir + ".old")
-    end
-    FileUtils.move(targetdir, publishdir)
-    if Dir.exist?(publishdir + ".old")
-      FileUtils.rm_rf(publishdir + ".old")
-    end
+    FileUtils.cp_r(targetdir + "/.", publishdir + "/.")
   end
 end
 

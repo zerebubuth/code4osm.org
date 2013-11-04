@@ -14,6 +14,6 @@
 - name: openstreetmap-cgimap
   title: CGIMap
   scm: git
-  url: https://github.com/zerebubuth/openstreetmap-cgimap.gi
+  url: https://github.com/zerebubuth/openstreetmap-cgimap.git
   rename:
     README: index
