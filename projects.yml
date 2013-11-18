@@ -10,6 +10,8 @@
   url: essentials
   files:
     - '**/*.md'
+  rename:
+    introduction: index
 - name: openstreetmap-cgimap
   title: CGIMap
   summary_html: >-
