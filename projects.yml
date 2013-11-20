@@ -8,6 +8,8 @@
     structured at a very large scale, then this is a great place to start.
   scm: none
   url: essentials
+  languages:
+    - text
   files:
     - '**/*.md'
   rename:
@@ -22,6 +24,11 @@
     a faster response.
   scm: git
   url: https://github.com/zerebubuth/openstreetmap-cgimap.git
+  tags:
+    language: 
+      - C++
+      - Ruby
+    component: "Editing API"
   rename:
     README: index
 - name: planet-dump-ng
@@ -33,5 +40,8 @@
     which is produced by this bit of software.
   scm: git
   url: https://github.com/zerebubuth/planet-dump-ng.git
+  tags:
+    language: C++
+    component: "Dumps & Diffs"
   rename:
     README: index

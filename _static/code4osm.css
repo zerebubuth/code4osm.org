@@ -1,7 +1,11 @@
-body { padding-top: 60px; }
+body.c4-nav { padding-top: 50px; }
 
 footer.c4-footer {
     border-top: 1px solid #ddd;
     padding-top: 30px;
     margin-top: 10px;
+}
+
+ul.c4-unbullet {
+    list-style: none;
 }

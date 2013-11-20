@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Code 4 OSM: <%= title %></title>
+    <title>Code 4 OSM: List of projects</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="List OpenStreetMap projects."/>
+    <meta name="keywords" content="OpenStreetMap,development,code,software,learn,documentation"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8"/>
 
@@ -18,40 +19,23 @@
     <!-- local stuff -->
     <link rel="stylesheet" type="text/css" href="<%= topdir %>/static/code4osm.css"/>
   </head>
-  <body class="c4-nav">
-    <header class="navbar navbar-inverse navbar-fixed-top c4-docs-nav" role="banner">
+  <body>
+    <div class="jumbotron">
       <div class="container">
-	<div class="navbar-header">
-	  <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".c4-navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-	  </button>
-	  <a href="<%= topdir %>/" class="navbar-brand">Code4OSM</a>
-	</div>
-	<nav class="collapse navbar-collapse c4-navbar-collapse" role="navigation">
-	  <ul class="nav navbar-nav">
-	    <% projects.each do |project| %>
-            <li<%= project['name'] == this_project ? " class=\"active\"" : "" %>>
-              <a href="<%= topdir %>/<%= project['name'] %>/"><%= project['title'] %></a>
-            </li>
-	    <% end %>
-	  </ul>
-	</nav>
+        <h1>List of projects</h1>
+        <p>Below is a list of projects for which we have documentation.</p>
       </div>
-    </header>
-
-    <div class="container c4-docs-container">
+    </div>
+    
+    <div class="container">
       <div class="row">
-	<div class="col-md-3">
-	  <div class="c4-sidebar hidden-print affix" role="complimentary">
-	    <%= toc %>
-	  </div>
+	<% projects.sort_by {|p| p['title']}.each do |p| %>
+	<div class="col-md-4">
+	  <h2><%= p['title'] %></h2>
+	  <p><%= p['summary_html'] %></p>
+          <p><a class="btn btn-default" href="<%= topdir %>/projects/<%= p['name'] %>" role="button">Learn more &raquo;</a></p>
 	</div>
-	<div class="col-md-9" role="main">
-	  <%= content %>
-	</div>
+	<% end %>
       </div>
     </div>
 
@@ -65,5 +49,7 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <!-- add code for body selection of projects -->
+    <script src="<%= topdir %>/static/filter.js"></script>
   </body>
 </html>

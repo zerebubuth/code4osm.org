@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Code4OSM</title>
+    <title>Code 4 OSM: Development resources for OpenStreetMap related software</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Development resources for OpenStreetMap related software."/>
+    <meta name="keywords" content="OpenStreetMap,development,code,software,learn,documentation"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8"/>
 
@@ -18,50 +20,44 @@
     <link rel="stylesheet" type="text/css" href="<%= topdir %>/static/code4osm.css"/>
   </head>
   <body>
-    <header class="navbar navbar-inverse navbar-fixed-top c4-docs-nav" role="banner">
-      <div class="container">
-	<div class="navbar-header">
-	  <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".c4-navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-	  </button>
-	  <a href="<%= topdir %>/" class="navbar-brand">Code4OSM</a>
-	</div>
-	<nav class="collapse navbar-collapse c4-navbar-collapse" role="navigation">
-	  <ul class="nav navbar-nav">
-	    <% projects.each do |project| %>
-            <li>
-              <a href="<%= topdir %>/<%= project['name'] %>/"><%= project['title'] %></a>
-            </li>
-	    <% end %>
-	  </ul>
-	</nav>
-      </div>
-    </header>
-
     <div class="jumbotron">
       <div class="container">
-        <h1>Witty title here</h1>
+        <h1>Code 4 OSM</h1>
         <p>OSM, the <a href="http://osm.org/">OpenStreetMap</a> project, is the world's best free 
 	  and open source of geographic data, maintained and improved by thousands of contributors
 	  worldwide. This site brings together resources to help you develop applications using
 	  this great data, tools for contributing to the project and infrastrucure components
 	  which keep it running.</p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="#essentials">Get Started &raquo;</a></p>
       </div>
     </div>
 
     <div class="container">
       <div class="row">
-	<% projects.each do |project| %>
         <div class="col-md-4">
-          <h2 id="<%= project['name'] %>"><%= project['title'] %></h2>
-          <%= project['summary_html'] %>
-          <p><a class="btn btn-default" href="<%= project['name'] %>/" role="button">Learn more &raquo;</a></p>
+          <h2 id="learn">Learn about...</h2>
+	  <p>Learn about the essentials of how geographic data are structured in OSM,
+	    how to interact with the OSM APIs, how data flow through the OSM
+	    infrastructure and ecosystem. If you want to get an idea of how OSM is
+	    structured at a very large scale, then this is a great place to start.</p>
+          <p><a class="btn btn-default" href="essentials/" role="button">Learn more &raquo;</a></p>
         </div>
-	<% end %>
+
+        <div class="col-md-4">
+          <h2 id="get-involved">Get involved with...</h2>
+	  <p>Browse projects related to OSM and get involved with the community helping 
+	    to make the software better. There are many OSM related projects with different
+	    functions, in different programming languages and of different sizes. We'll try
+	    to help you find one which interests you.</p>
+          <p><a class="btn btn-default" href="tags/" role="button">Get involved &raquo;</a></p>
+        </div>
+
+        <div class="col-md-4">
+          <h2 id="">Find documentation on...</h2>
+	  <p>Browse the developer documentation for projects related to OSM. We try to
+	    collect and collate the documentation from many projects to help you find
+	    the information you're looking for.</p>
+          <p><a class="btn btn-default" href="projects/" role="button">Find documentation &raquo;</a></p>
+        </div>
       </div>
     </div>
 

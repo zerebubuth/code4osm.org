@@ -34,6 +34,7 @@ def markdown(text)
 end
 
 def run_template(title, toc, content, template, topdir, projects, this_project)
+  include ERB::Util
   b = binding
   ERB.new(File.read(template)).result(b)
 end
@@ -51,7 +52,11 @@ namespace :code4osm do
   task :tmpdir do
     Dir.mkdir(tmpdir) unless Dir.exist?(tmpdir)
   end
-  
+
+  task :targetdir do
+    Dir.mkdir(targetdir) unless Dir.exist?(targetdir)
+  end
+
   projects.each do |project|
     name = project['name']
     workdir = "#{tmpdir}/#{name}"
@@ -76,7 +81,7 @@ namespace :code4osm do
         end
       end
       
-      task :build => [:update] do
+      task :build => [:update, :targetdir] do
         globs = project['files'] || ['**/*.md']
         workdir = project['url'] if project['scm'] == 'none'
         globs.each do |glob|
@@ -109,18 +114,36 @@ namespace :code4osm do
     end
   end
 
-  task :index do
+  task :index => [:targetdir] do
     target_file = File.join(targetdir, 'index.html')
     File.open(target_file, "w") do |fh|
       fh.puts run_template("", "", "", '_templates/index.erb', ".", projects, "")
     end
   end
 
-  task :static do
+  task :tags => [:targetdir] do
+    tags_dir = File.join(targetdir, 'tags')
+    Dir.mkdir(tags_dir) unless Dir.exist?(tags_dir)
+    target_file = File.join(tags_dir, 'index.html')
+    File.open(target_file, "w") do |fh|
+      fh.puts run_template("", "", "", '_templates/tags.erb', "..", projects, "")
+    end
+  end
+
+  task :projects => [:targetdir] do
+    projects_dir = File.join(targetdir, 'projects')
+    Dir.mkdir(projects_dir) unless Dir.exist?(projects_dir)
+    target_file = File.join(projects_dir, 'index.html')
+    File.open(target_file, "w") do |fh|
+      fh.puts run_template("", "", "", '_templates/projects.erb', "..", projects, "")
+    end
+  end
+
+  task :static => [:targetdir] do
     FileUtils.cp_r('_static/.', "#{targetdir}/static")
   end
 
-  task :website => [:index, :static, *tasks] do
+  task :website => [:index, :tags, :projects, :static, *tasks] do
     puts "Doing website"
     FileUtils.cp_r(targetdir + "/.", publishdir + "/.")
   end

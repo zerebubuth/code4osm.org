@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Code 4 OSM: Projects by tag</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Filter OpenStreetMap projects by tag."/>
+    <meta name="keywords" content="OpenStreetMap,development,code,software,learn,documentation"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+
+    <!-- Bootstrap stuff -->
+    <link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" media="screen" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap-theme.min.css"/>
+
+    <!-- for code highlighting -->
+    <link rel="stylesheet" type="text/css" href="<%= topdir %>/static/coderay.css"/>
+
+    <!-- local stuff -->
+    <link rel="stylesheet" type="text/css" href="<%= topdir %>/static/code4osm.css"/>
+  </head>
+  <body>
+    <div class="jumbotron">
+      <div class="container">
+	<h1>Filter projects by tag</h1>
+	<p>Find projects by filtering based on information such as which components of the
+	  OSM data flow they are used in or which languages they are implemented in.</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row tags">
+	<% all_keys = projects.flat_map {|p| (p['tags'] or {}).to_a}.group_by {|kv| kv[0]} 
+	   all_keys.each do |k,vs|
+	     all_keys[k] = vs.flat_map {|v| [v[1]].flatten}.sort.uniq
+	   end
+	   all_keys.each do |key,vals| %>
+	<div class="col-md-3">
+	  <h3><%= h key.capitalize %></h3>
+	  <ul class="c4-unbullet">
+	    <% vals.each do |val| %>
+	    <li><label><input type="checkbox" rel="<%= (key + ' ' + val).downcase.gsub(/[^a-z]/,'-') %>"/><%= h val %></label></li>
+	    <% end %>
+	  </ul>
+	</div>
+	<% end %>
+      </div>
+      
+      <hr/>
+
+      <div class="row results">
+	<% projects.each do |p| %>
+	<div class="col-md-4 <%= (p['tags'] or {}).flat_map {|key, vals| [vals].flatten.map {|val| (key + ' ' + val).downcase.gsub(/[^a-z]/,'-')}}.join(' ') %>">
+	  <h2><%= p['title'] %></h2>
+	  <p><%= p['summary_html'] %></p>
+          <p><a class="btn btn-default" href="<%= topdir %>/projects/<%= p['name'] %>" role="button">Learn more &raquo;</a></p>
+	</div>
+	<% end %>
+      </div>
+    </div>
+
+    <footer class="c4-footer" role="contentinfo">
+      <div class="container">
+	<p>Code4OSM is developed on GitHub: <a href="https://github.com/zerebubuth/code4osm.org">Fork Me</a> or <a href="https://github.com/zerebubuth/code4osm.org/issues">Report a problem</a>.</p>
+      </div>
+    </footer>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+    <!-- add code for body selection of projects -->
+    <script src="<%= topdir %>/static/filter.js"></script>
+  </body>
+</html>
