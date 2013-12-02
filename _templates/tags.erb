@@ -39,7 +39,7 @@
 	  <h3><%= h key.capitalize %></h3>
 	  <ul class="c4-unbullet">
 	    <% vals.each do |val| %>
-	    <li><label><input type="checkbox" rel="<%= (key + ' ' + val).downcase.gsub(/[^a-z]/,'-') %>"/><%= h val %></label></li>
+	    <li class="checkbox"><label><input type="checkbox" rel="<%= (key + ' ' + val).downcase.gsub(/[^a-z]/,'-') %>"/> <%= h val %></label></li>
 	    <% end %>
 	  </ul>
 	</div>
