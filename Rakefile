@@ -50,11 +50,11 @@ namespace :code4osm do
   publishdir = config['publishdir']
   
   task :tmpdir do
-    Dir.mkdir(tmpdir) unless Dir.exist?(tmpdir)
+    FileUtils.mkdir_p(tmpdir)
   end
 
   task :targetdir do
-    Dir.mkdir(targetdir) unless Dir.exist?(targetdir)
+    FileUtils.mkdir_p(targetdir)
   end
 
   projects.each do |project|
