@@ -28,15 +28,23 @@
     </div>
     
     <div class="container">
-      <div class="row">
-	<% projects.sort_by {|p| p['title']}.each do |p| %>
-	<div class="col-md-4">
-	  <h2><%= p['title'] %></h2>
-	  <p><%= p['summary_html'] %></p>
-          <p><a class="btn btn-default" href="<%= topdir %>/<%= p['name'] %>" role="button">Learn more &raquo;</a></p>
-	</div>
-	<% end %>
-      </div>
+      <% projects.each_slice(3) do |row| %>
+        <div class="row">
+          <% row.sort_by {|p| p['title']}.each do |p| %>
+            <div class="col-md-4">
+              <h2><%= p['title'] %></h2>
+              <p><%= p['summary_html'] %></p>
+            </div>
+          <% end %>
+        </div>
+        <div class="row">
+          <% row.sort_by {|p| p['title']}.each do |p| %>
+            <div class="col-md-4">
+              <p><a class="btn btn-default" href="<%= topdir %>/<%= p['name'] %>" role="button">Learn more &raquo;</a></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
 
     <footer class="c4-footer" role="contentinfo">
