@@ -50,11 +50,15 @@ namespace :code4osm do
   publishdir = config['publishdir']
   
   task :tmpdir do
-    Dir.mkdir(tmpdir) unless Dir.exist?(tmpdir)
+    FileUtils.mkdir_p(tmpdir)
   end
 
   task :targetdir do
-    Dir.mkdir(targetdir) unless Dir.exist?(targetdir)
+    FileUtils.mkdir_p(targetdir)
+  end
+
+  task :publishdir do
+    FileUtils.mkdir_p(publishdir)
   end
 
   projects.each do |project|
@@ -143,7 +147,7 @@ namespace :code4osm do
     FileUtils.cp_r('_static/.', "#{targetdir}/static")
   end
 
-  task :website => [:index, :tags, :projects, :static, *tasks] do
+  task :website => [:index, :tags, :projects, :static, :publishdir, *tasks] do
     puts "Doing website"
     FileUtils.cp_r(targetdir + "/.", publishdir + "/.")
   end
