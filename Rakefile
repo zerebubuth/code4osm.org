@@ -33,7 +33,7 @@ def markdown(text)
   {:toc => markdown_to_toc.render(text), :content => markdown_to_html.render(text)}
 end
 
-def run_template(title, toc, content, template, topdir, projects, this_project)
+def run_template(title, toc, content, template, topdir, projects, this_project, all_files = [])
   include ERB::Util
   b = binding
   ERB.new(File.read(template)).result(b)
@@ -88,6 +88,9 @@ namespace :code4osm do
       task :build => [:update, :targetdir] do
         globs = project['files'] || ['**/*.md']
         workdir = project['url'] if project['scm'] == 'none'
+
+        all_files = Array.new
+
         globs.each do |glob|
           Dir.glob("#{workdir}/#{glob}") do |file|
             reldir = Pathname.new(File.dirname(file)).relative_path_from(Pathname.new(workdir)).to_s
@@ -101,16 +104,20 @@ namespace :code4osm do
               base = project['rename'][base]
             end
 
-            target_file = File.join(targetdir, name, reldir, base + '.html')
-            title = base.gsub(/[ _-]/, " ").capitalize
-
-            FileUtils.mkdir_p(File.dirname(target_file))
-            File.open(target_file, "w") do |fh|
-              md = markdown(File.read(file))
-              fh.puts run_template(title, md[:toc], md[:content], template, topdir, projects, name)
-            end
-            puts "Built: #{target_file}"
+            all_files << [file, reldir, topdir, ext, base]
           end
+        end
+
+        all_files.each do |file, reldir, topdir, ext, base|
+          target_file = File.join(targetdir, name, reldir, base + '.html')
+          title = base.gsub(/[ _-]/, " ").capitalize
+          
+          FileUtils.mkdir_p(File.dirname(target_file))
+          File.open(target_file, "w") do |fh|
+            md = markdown(File.read(file))
+            fh.puts run_template(title, md[:toc], md[:content], template, topdir, projects, project, all_files)
+          end
+          puts "Built: #{target_file}"
         end
       end
 

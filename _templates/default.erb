@@ -32,11 +32,20 @@
 	</div>
 	<nav class="collapse navbar-collapse c4-navbar-collapse" role="navigation">
 	  <ul class="nav navbar-nav">
-	    <% projects.each do |project| %>
-            <li<%= project['name'] == this_project ? " class=\"active\"" : "" %>>
-              <a href="<%= topdir %>/<%= project['name'] %>/"><%= project['title'] %></a>
-            </li>
-	    <% end %>
+			<li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= this_project['title'] %> <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="<%= this_project['home'] %>">Project Home</a></li>
+        </ul>
+      </li>
+			<li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Docs <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+					<% all_files.each do |file,reldir,topdir,ext,base| %>
+          <li><a href="<%= topdir %>/<%= this_project['name'] %>/<%= reldir %>/<%= base %>.html"><%= base.capitalize %></a></li>
+					<% end %>
+        </ul>
+      </li>
 	  </ul>
 	</nav>
       </div>
@@ -57,7 +66,8 @@
 
     <footer class="c4-footer" role="contentinfo">
       <div class="container">
-	<p>Code4OSM is developed on GitHub: <a href="https://github.com/zerebubuth/code4osm.org">Fork Me</a> or <a href="https://github.com/zerebubuth/code4osm.org/issues">Report a problem</a>.</p>
+				<p>Documentation for <a href="<%= this_project['home'] %>"><%= this_project['title'] %></a> automatically generated from the code documentation.</p>
+				<p>Code4OSM is developed on GitHub: <a href="https://github.com/zerebubuth/code4osm.org">Fork Me</a> or <a href="https://github.com/zerebubuth/code4osm.org/issues">Report a problem</a>.</p>
       </div>
     </footer>
 

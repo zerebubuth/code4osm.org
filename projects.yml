@@ -8,6 +8,7 @@
     structured at a very large scale, then this is a great place to start.
   scm: none
   url: essentials
+  home: http://code4osm.org/essentials
   languages:
     - text
   files:
@@ -24,6 +25,7 @@
     a faster response.
   scm: git
   url: https://github.com/zerebubuth/openstreetmap-cgimap.git
+  home: http://github.com/zerebubuth/openstreetmap-cgimap
   tags:
     language: 
       - C++
@@ -40,6 +42,7 @@
     which is produced by this bit of software.
   scm: git
   url: https://github.com/zerebubuth/planet-dump-ng.git
+  home: http://github.com/zerebubuth/planet-dump-ng
   tags:
     language: C++
     component: "Dumps & Diffs"
