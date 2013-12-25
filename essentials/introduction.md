@@ -35,7 +35,7 @@ Briefly,
   more information, see
   [the section on data capture tools](data-capture-tools.html).
 * Contributors organise the data which they want to put into
-  OpenStreetMap and upload it either via the [website.html web site],
+  OpenStreetMap and upload it either via the [web site](website.html),
   or using one of the [editing tools](editing-tools.html) via the
   [editing API](editing-api.html).
 * The OpenStreetMap web site and editing API store the information in
@@ -45,11 +45,11 @@ Briefly,
   both the current state of the database and the editing history of
   the database. Due to their size (many tens of gigabytes) dumps are
   made regularly, but only periodically. For more information, please
-  see [the section on data dumps](data-dumps.html). 
+  see the section on [data dumps](data-dumps.html). 
 * Information about the updates to the data is available also as a
   stream of "diffs" which can be applied to keep external data sources
-  up to date. For more information, please see
-  [the section on data diffs](data-diffs.html).
+  up to date. For more information, please see the section on
+  [data diffs](data-diffs.html).
 * Many tools consume the data dumps and diffs and transform the
   OpenStreetMap data into other forms. For example, there are many
   tools which create geographic databases suitable for
