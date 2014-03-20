@@ -15,6 +15,41 @@ class MarkdownRenderer < Redcarpet::Render::HTML
   end
 end
 
+class BootstrapTocRender < Redcarpet::Render::HTML_TOC
+  def initialize
+    super
+    @level = 0
+  end
+
+  def header(text, level, anchor)
+    rv = ""
+    while @level < level
+      if @level == 0
+        rv += "<ul class=\"nav\">"
+      else
+        rv += "<ul>"
+      end
+      @level += 1
+    end
+    while @level > level
+      rv += "</ul>"
+      @level -= 1
+    end
+    
+    rv += "<li id=\"#{anchor}\">#{text}</li>"
+    return rv
+  end
+
+  def doc_footer
+    rv = ""
+    while @level > 0
+      rv += "</ul>"
+      @level -= 1
+    end
+    return rv
+  end
+end
+
 def markdown(text)
   rndr = MarkdownRenderer.new(:filter_html => true, :with_toc_data => true)
   options = {
@@ -27,7 +62,7 @@ def markdown(text)
   }
   markdown_to_html = Redcarpet::Markdown.new(rndr, options)
 
-  toc_rndr = Redcarpet::Render::HTML_TOC.new
+  toc_rndr = BootstrapTocRender.new
   markdown_to_toc = Redcarpet::Markdown.new(toc_rndr, options)
 
   {:toc => markdown_to_toc.render(text), :content => markdown_to_html.render(text)}
