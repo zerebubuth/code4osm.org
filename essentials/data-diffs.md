@@ -3,7 +3,7 @@ A local OpenStreetMap data base can be kept up to date by way of [periodic updat
 
 Related terms are:
 * Replication files
-* Minutley updates
+* Minutely updates
 
 Updates may only be applied to local data bases that were originally populated with the "--slim" option enabled.  
 
