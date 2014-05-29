@@ -5,6 +5,8 @@ Or, how to consume OpenStreetMap data.
 ##Planet
 The canonical method of consuming OpenStreetMap data requires non-trivial hardware.  A snapshot of the current OpenStreetMap data base is acquired, loaded into a local data base, and then consumed by local tools.  
 
+Consider whether you will update your local [data base periodically](data-diffs.md), or create a new one from scratch.  You may need to configure your data base differently for each.  
+
 1. Download current data base called a ["Planet File"](http://planet.osm.org/)
 2. Setup local data base
 3. Load data into local data base with [osm2pgsql](http://wiki.openstreetmap.org/wiki/Osm2pgsql) or Osmium(?)
